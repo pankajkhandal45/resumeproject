@@ -6,6 +6,7 @@ import {
   Trash2, Eye, X, Cpu, Shield, Star, BookOpen,
   Phone, Mail, Link, Code, Clock, BarChart2, ChevronDown, ChevronUp
 } from 'lucide-react';
+import { API_BASE_URL } from '../config';
 
 // ── helpers ─────────────────────────────────────────────────────────────────
 const scoreColor = (s) =>
@@ -215,7 +216,7 @@ const CandidateDashboard = () => {
 
   const fetchMyResumes = async () => {
     try {
-      const res = await axios.get('http://127.0.0.1:5000/api/resume/my-resume', {
+      const res = await axios.get(`${API_BASE_URL}/api/resume/my-resume`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       setResumes(res.data);
@@ -231,7 +232,7 @@ const CandidateDashboard = () => {
     setLoading(true);
     try {
       await axios.post(
-        'http://127.0.0.1:5000/api/resume/upload',
+        `${API_BASE_URL}/api/resume/upload`,
         { text: resumeText, certificateHashes: certHash ? [certHash] : [] },
         { headers: { Authorization: `Bearer ${user.token}` } }
       );
@@ -253,7 +254,7 @@ const CandidateDashboard = () => {
     setResumes(resumes.filter(r => r._id !== id));
 
     try {
-      await axios.delete(`http://127.0.0.1:5000/api/resume/${id}`, {
+      await axios.delete(`${API_BASE_URL}/api/resume/${id}`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       showToast('Resume deleted successfully');

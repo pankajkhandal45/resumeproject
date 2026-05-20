@@ -6,6 +6,7 @@ import {
   Link, Code, Clock, BarChart2, ChevronDown, ChevronUp,
   User, Cpu, BookOpen, AlertTriangle
 } from 'lucide-react';
+import { API_BASE_URL } from '../config';
 
 // ── helpers ─────────────────────────────────────────────────────────────────
 const scoreColor = (s) =>
@@ -252,7 +253,7 @@ const RecruiterDashboard = () => {
 
   const fetchCandidates = async () => {
     try {
-      const res = await axios.get('http://127.0.0.1:5000/api/resume/all', {
+      const res = await axios.get(`${API_BASE_URL}/api/resume/all`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       setCandidates(res.data);

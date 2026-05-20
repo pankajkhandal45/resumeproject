@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 import { Users, FileText, Activity } from 'lucide-react';
+import { API_BASE_URL } from '../config';
 
 const AdminDashboard = () => {
   const [stats, setStats] = useState({ userCount: 0, resumeCount: 0 });
@@ -10,7 +11,7 @@ const AdminDashboard = () => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const res = await axios.get('http://127.0.0.1:5000/api/admin/stats', {
+        const res = await axios.get(`${API_BASE_URL}/api/admin/stats`, {
           headers: { Authorization: `Bearer ${user.token}` }
         });
         setStats(res.data);
