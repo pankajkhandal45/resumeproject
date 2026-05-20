@@ -1,0 +1,43 @@
+import cv2
+import numpy as np
+import face_recognition
+import pandas as pd
+import datetime
+
+# Load known face encodings (replace with your training images)
+known_face_encodings = [face_recognition.face_encodings(face_recognition.load_image_file("person1.jpg"))[0]]
+known_face_names = ["Person 1"]
+
+# Attendance file
+attendance_file = 'attendance.csv'
+
+# Start video capture
+video_capture = cv2.VideoCapture(0)
+
+attendance = pd.DataFrame(columns=['Name', 'Time'])
+
+while True:
+    ret, frame = video_capture.read()
+    rgb_frame = frame[:, :, ::-1]
+    face_locations = face_recognition.face_locations(rgb_frame)
+    face_encodings = face_recognition.face_encodings(rgb_frame, face_locations)
+
+    for face_encoding in face_encodings:
+        matches = face_recognition.compare_faces(known_face_encodings, face_encoding)
+        name = "Unknown"
+
+        if True in matches:
+            first_match_index = matches.index(True)
+            name = known_face_names[first_match_index]
+            now = datetime.datetime.now()
+            attendance = attendance.append({'Name': name, 'Time': now.strftime("%Y-%m-%d %H:%M:%S")}, ignore_index=True)
+
+    cv2.imshow('Video', frame)
+
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+# Save attendance log
+attendance.to_csv(attendance_file, index=False)
+video_capture.release()
+cv2.destroyAllWindows()
