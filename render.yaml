@@ -7,6 +7,9 @@ services:
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
     plan: free
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10.13
 
   # 2. Node.js Backend Service (Express)
   - type: web
