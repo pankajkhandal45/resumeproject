@@ -22,6 +22,4 @@ services:
       - key: JWT_SECRET
         generateValue: true # Render will automatically generate a secure JWT secret
       - key: ML_SERVICE_URL
-        fromService:
-          name: resume-ml-service
-          type: web
+        value: http://resume-ml-service:10000
